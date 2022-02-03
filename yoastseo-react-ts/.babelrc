@@ -1,0 +1,10 @@
+{
+  "presets": [
+    "react-app",
+    "@babel/preset-react"
+  ],
+  "plugins": [
+    "@babel/plugin-syntax-jsx",
+    "transform-object-rest-spread"
+  ]
+}
