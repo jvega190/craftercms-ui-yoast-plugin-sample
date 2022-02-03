@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function() {
     return {
       title: document.querySelector('title')?.innerText,
       description: document.querySelector('meta[name="description"]')?.content,
-      keyword: document.querySelector('meta[name="keywpord"]')?.content,
+      keyword: document.querySelector('meta[name="keyword"]')?.content,
       contents: document.querySelector('body').innerHTML
     }
   };
