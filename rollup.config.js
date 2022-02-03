@@ -1,6 +1,6 @@
 import typescript from 'rollup-plugin-typescript2';
 import commonjs from '@rollup/plugin-commonjs';
-import resolve, { nodeResolve } from '@rollup/plugin-node-resolve';
+import resolve from '@rollup/plugin-node-resolve';
 import replaceImportsWithVars from 'rollup-plugin-replace-imports-with-vars';
 import json from '@rollup/plugin-json';
 import pkg from './package.json';
@@ -40,7 +40,7 @@ export default {
     typescript(),
     treeshaking(),
     replaceImportsWithVars({ varType: 'var', replacementLookup: globals }),
-    resolve({ extensions }),
+    resolve({ extensions, preferBuiltins: false }),
     commonjs(),
     copy({
       targets: [
@@ -53,7 +53,6 @@ export default {
         //   dest: '{pathToYourCrafterSite}/sandbox/config/studio/plugins/apps/library'
         // }
       ]
-    }),
-    nodeResolve()
+    })
   ]
 };
