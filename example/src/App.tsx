@@ -12,7 +12,7 @@ const App = () => {
   }, [])
   return (
     <>
-      <ReactComponent text="John" />
+      <ReactComponent />
       <div ref={nonReactRef} />
     </>
   )
