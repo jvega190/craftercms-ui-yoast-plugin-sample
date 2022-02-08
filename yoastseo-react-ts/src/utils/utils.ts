@@ -1,4 +1,4 @@
-import {Rating, Result} from "../models/models";
+import {Rating, Result} from "../models/Analysis";
 // @ts-ignore
 import { helpers } from "yoastseo";
 
@@ -36,4 +36,15 @@ export function addRating(item: Result): Rating {
     identifier: item.getIdentifier(),
     score: item.score
   } as Rating;
+}
+
+export function sortRatings (ratings: Rating[]) {
+  return ratings.sort((a, b) => {
+    // First compare the score.
+    if (a.score < b.score) {
+      return -1;
+    } else {
+      return 1
+    }
+  });
 }

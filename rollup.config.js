@@ -35,13 +35,18 @@ export default {
     json(),
     replace({
       preventAssignment: true,
-      'process.env.NODE_ENV': JSON.stringify('production')
+      'process.env.NODE_ENV': JSON.stringify('production'),
+      'process.env.NODE_DEBUG': false,
+      'process.env.READABLE_STREAM': false,
+      'new emitter': 'new emitter.EventEmitter'
     }),
     typescript(),
     treeshaking(),
     replaceImportsWithVars({ varType: 'var', replacementLookup: globals }),
     resolve({ extensions, preferBuiltins: false }),
-    commonjs(),
+    commonjs({
+      exclude: 'src/**',
+    }),
     copy({
       targets: [
         {

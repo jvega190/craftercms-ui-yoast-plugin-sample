@@ -1,12 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import Button from '@mui/material/Button';
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import Typography from '@mui/material/Typography';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Paper, SeoAssessor, ContentAssessor, helpers } from "yoastseo";
-import {Paper as PaperType} from "./models/models";
+import {Paper as PaperType} from "./models/Analysis";
 import Jed from "jed";
 import AnalysisResults from "./components/AnalysisResults";
 
@@ -29,10 +24,11 @@ const seoAssessor = new SeoAssessor(i18n());
 
 const ReactComponent = () => {
   const [paper, setPaper] = useState<PaperType>();
-  const [contentAssessorResults, setContentAssessorResults] = useState(null);
-  const [seoAssessorResults, setSeoAssessorResults] = useState(null);
-
-  const onClickGetSEOData = () => {
+  const [contentAssessorResults, setContentAssessorResults] = useState();
+  const [seoAssessorResults, setSeoAssessorResults] = useState();
+  const [requestedSEOData, setRequestedSEOData] = useState(false);
+  const requestSEOData = () => {
+    setRequestedSEOData(true);
     //@ts-ignore
     window.CrafterCMSNext?.system.getHostToGuestBus().next({ type: 'REQUEST_SEO_DATA' });
   }
@@ -40,17 +36,36 @@ const ReactComponent = () => {
   useEffect(() => {
     //@ts-ignore
     const guestToHostSubscription = window.CrafterCMSNext?.system.getGuestToHostBus()
-      // @ts-ignore
-      .pipe(window.CrafterCMSNext.rxjs.operators.filter((action) => action.type === 'RESPONSE_SEO_DATA'))
-      .subscribe(({ payload }) => {
-        const { contents, description, keyword, title } = payload;
-        setPaper(new Paper(contents, {
-          title,
-          titleWidth: helpers.measureTextWidth(title),
-          description,
-          keyword
-        }));
+      .subscribe((action) => {
+        switch (action.type) {
+          case 'RESPONSE_SEO_DATA':
+            const { contents, description, keyword, title } = action.payload;
+
+            // title?: string – The SEO title.
+            // titleWidth?: number – The width of the title in pixels.
+            // description?: string – The SEO description.
+            // keyword?: string – The main keyword.
+            // synonyms?: string – The main keyword's synonyms.
+            // url?: string – The slug.
+            // permalink?: string – The base url + slug.
+
+            setPaper(new Paper(contents, {
+              title,
+              titleWidth: helpers.measureTextWidth(title),
+              description,
+              keyword
+            }));
+            setRequestedSEOData(false);
+            break;
+          case 'GUEST_CHECK_IN':
+            requestSEOData();
+            break;
+        }
       });
+
+    if (!requestedSEOData) {
+      requestSEOData();
+    }
 
     return () => {
       guestToHostSubscription.unsubscribe();
@@ -72,53 +87,30 @@ const ReactComponent = () => {
       <Button
         variant="contained"
         fullWidth
-        onClick={onClickGetSEOData}
+        onClick={requestSEOData}
         sx={{
           marginTop: '10px',
           marginBottom: '10px'
         }}
       >
-        Get SEO Data
+        Update SEO Data
       </Button>
-
-      <Accordion>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1a-content"
-          id="panel1a-header"
-        >
-          <Typography>Content Analysis</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          {
-            contentAssessor && contentAssessorResults &&
-            <AnalysisResults
-              heading={"Content"}
-              results={contentAssessorResults}
-              assessor={contentAssessor}
-            />
-          }
-        </AccordionDetails>
-      </Accordion>
-      <Accordion>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel2a-content"
-          id="panel2a-header"
-        >
-          <Typography>SEO Analysis</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          {
-            seoAssessor && seoAssessorResults &&
-            <AnalysisResults
-              heading={"SEO"}
-              results={seoAssessorResults}
-              assessor={seoAssessor}
-            />
-          }
-        </AccordionDetails>
-      </Accordion>
+      {
+        contentAssessor &&
+        <AnalysisResults
+          heading={"Content Analysis"}
+          results={contentAssessorResults}
+          assessor={contentAssessor}
+        />
+      }
+      {
+        seoAssessor &&
+        <AnalysisResults
+          heading={"SEO Analysis"}
+          results={seoAssessorResults}
+          assessor={seoAssessor}
+        />
+      }
     </>
   )
 }

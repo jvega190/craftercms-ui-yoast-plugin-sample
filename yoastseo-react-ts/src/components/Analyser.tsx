@@ -14,7 +14,7 @@ import {
   synonyms
 } from "../containers/contents";
 import AnalysisResults from "../components/AnalysisResults";
-import { Paper as PaperType } from '../models/models';
+import { Paper as PaperType } from '../models/Analysis';
 import TextField from '@mui/material/TextField';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -24,9 +24,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Typography from '@mui/material/Typography';
-import SnippetPreview from "../search-metadata-previews/src/snippet-preview/SnippetPreview";
 
-// TODO: see how can I get rid of this
 const i18n = () => {
   return new Jed({
     domain: `js-text-analysis`,
@@ -72,8 +70,8 @@ const defaultArgs = {
   // onMouseUp: jest.fn(),
 };
 
-// TODO: a prop may be the item that will be analyzed
-export default function Analyser (props: any) {
+export default function Analyser () {
+  // const [paper, setPaper] = useState<PaperType>();
   const [paper, setPaper] = useState<PaperType>(new Paper(contents, {
     title,
     titleWidth: helpers.measureTextWidth(title),
@@ -85,8 +83,8 @@ export default function Analyser (props: any) {
     locale: "id_ID"
   }));
   const [text, setText] = useState(contents);
-  const [contentAssessorResults, setContentAssessorResults] = useState(null);
-  const [seoAssessorResults, setSeoAssessorResults] = useState(null);
+  const [contentAssessorResults, setContentAssessorResults] = useState();
+  const [seoAssessorResults, setSeoAssessorResults] = useState();
 
   useEffect(() => {
     contentAssessor.assess(paper);
@@ -111,7 +109,7 @@ export default function Analyser (props: any) {
 
   return (
     <Grid container spacing={4} alignItems="stretch">
-      <Grid item xs={12} md={6}>
+      <Grid item xs={12} md={8}>
         <Card>
           <CardContent>
             <Box
@@ -171,52 +169,30 @@ export default function Analyser (props: any) {
           </CardContent>
         </Card>
       </Grid>
-      <Grid item xs={12} md={6}>
-        <Accordion>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1a-content"
-            id="panel1a-header"
-          >
-            <Typography>Content Analysis</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            {
-              contentAssessor && contentAssessorResults &&
-              <AnalysisResults
-                heading={"Content"}
-                results={contentAssessorResults}
-                assessor={contentAssessor}
-              />
-            }
-          </AccordionDetails>
-        </Accordion>
-        <Accordion>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel2a-content"
-            id="panel2a-header"
-          >
-            <Typography>SEO Analysis</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            {
-              seoAssessor && seoAssessorResults &&
-              <AnalysisResults
-                heading={"SEO"}
-                results={seoAssessorResults}
-                assessor={seoAssessor}
-              />
-            }
-          </AccordionDetails>
-        </Accordion>
+      <Grid item xs={12} md={4}>
+        {
+          contentAssessor &&
+          <AnalysisResults
+            heading={"Content Analysis"}
+            results={contentAssessorResults}
+            assessor={contentAssessor}
+          />
+        }
+        {
+          seoAssessor &&
+          <AnalysisResults
+            heading={"SEO Analysis"}
+            results={seoAssessorResults}
+            assessor={seoAssessor}
+          />
+        }
         <Accordion>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls="panel3a-content"
             id="panel3a-header"
           >
-            <Typography>Google Preview</Typography>
+            <Typography fontWeight="bold">Google Preview</Typography>
           </AccordionSummary>
           <AccordionDetails>
             {/*{*/}

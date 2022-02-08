@@ -1,4 +1,13 @@
 document.addEventListener("DOMContentLoaded", function() {
+
+  // title?: string – The SEO title.
+  // description?: string – The SEO description.
+  // keyword?: string – The main keyword.
+  // synonyms?: string – The main keyword's synonyms.
+  // url?: string – The slug.
+  // permalink?: string – The base url + slug.
+  // locale?: string – The locale.
+
   const getSEOData = () => {
     return {
       title: document.querySelector('title')?.innerText,

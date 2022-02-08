@@ -1,26 +1,25 @@
 import React from "react";
 import Presenter from "./Presenter";
-import {Assessor, Result} from "../models/models";
-import {getIndicatorColor, summaryScore} from "../utils/utils";
+import {Assessor, Result} from "../models/Analysis";
+import {getIndicatorColor} from "../utils/utils";
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import RatingIndicator from "./RatingIndicator";
 
 interface AnalysisResultsProps {
   heading: string;
-  results: Result[] | null; // TODO: fix this
+  results?: Result[];
   assessor: Assessor;
 }
 
 function getStyles() {
   return {
-    ratings: {
-      marginBottom: '50px'
-    },
-    heading: {
-      color: '#fff',
-      marginBottom: '10px',
-      fontWeight: 'bold',
-      fontSize: '20px'
+    ratingIndicator: {
+      marginRight: '12px'
     },
     bad: {
       color: '#e2401b'
@@ -38,19 +37,25 @@ export default function AnalysisResults(props: AnalysisResultsProps) {
   const { results, assessor } = props;
   const sx = getStyles();
 
-  if (results) {
-    const resultColor = getIndicatorColor(results);
-
-    return (
-      <Box sx={sx.ratings}>
-        <Typography variant="subtitle1" sx={{ ...sx.heading, ...sx[resultColor] }}>
-          {props.heading} - {getIndicatorColor(results).toUpperCase()} (
-          {Math.max(0, summaryScore(results))}/10)
+  return (
+    <Accordion>
+      <AccordionSummary
+        expandIcon={<ExpandMoreIcon />}
+      >
+        <Typography variant="subtitle1" fontWeight="bold">
+          {results &&
+            <RatingIndicator rating={getIndicatorColor(results)} sx={{ ratingIndicator: sx.ratingIndicator }} />
+          }
+          {props.heading}
         </Typography>
-        <Presenter assessor={assessor} />
-      </Box>
-    );
-  } else {
-    return <></>
-  }
+      </AccordionSummary>
+      <AccordionDetails>
+        <Box>
+          {results &&
+            <Presenter assessor={assessor} />
+          }
+        </Box>
+      </AccordionDetails>
+    </Accordion>
+  );
 }
