@@ -12,7 +12,6 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemButton from "@mui/material/ListItemButton";
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
@@ -84,9 +83,6 @@ export default function GooglePreview(props: GooglePreviewProps) {
           <Divider light sx={{ mt: 1, mb: 2 }} />
           <SnippetPreview { ...props } mode={previewMode} />
         </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Close</Button>
-        </DialogActions>
       </Dialog>
     </>
   );

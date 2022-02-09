@@ -1,20 +1,9 @@
-import React, { useEffect, useRef } from 'react'
-import { ReactComponent, NonReactComponent } from 'sample-craftercms-plugin'
+import React from 'react'
+import { ReactComponent } from 'sample-craftercms-plugin'
 
 const App = () => {
-  const nonReactRef = useRef(null)
-  useEffect(() => {
-    NonReactComponent.main({
-      craftercms: window.craftercms,
-      configuration: { fontColor: 'red' },
-      element: nonReactRef.current
-    })
-  }, [])
   return (
-    <>
-      <ReactComponent />
-      <div ref={nonReactRef} />
-    </>
+    <ReactComponent />
   )
 }
 

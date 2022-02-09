@@ -1,19 +1,11 @@
  import ReactComponent from './ReactComponent'
-import NonReactComponent from './NonReactComponent'
-import en from './i18n/translations/en.json'
-import es from './i18n/translations/es.json'
-// import PluginDescriptor from '@craftercms/studio-ui'
 
 const plugin /*: PluginDescriptor */ = {
   id: 'org.craftercms.sampleComponentLibraryPlugin',
-  name: 'Sample component library',
-  description: 'An example plugin of a component library',
-  author: 'Roy Art',
+  name: 'Yoast Plugin',
+  description: '',
+  author: '',
   logo: null,
-  locales: {
-    en,
-    es
-  },
   apps: [
     {
       route: '/yada-yada',
@@ -21,8 +13,7 @@ const plugin /*: PluginDescriptor */ = {
     }
   ],
   widgets: {
-    'org.craftercms.sampleComponentLibraryPlugin.components.reactComponent': ReactComponent,
-    'org.craftercms.sampleComponentLibraryPlugin.components.nonReactComponent': NonReactComponent
+    'org.craftercms.sampleComponentLibraryPlugin.components.reactComponent': ReactComponent
   },
   scripts: [
     {
@@ -36,6 +27,6 @@ const plugin /*: PluginDescriptor */ = {
   themes: []
 }
 
-export { ReactComponent, NonReactComponent }
+export { ReactComponent }
 
 export default plugin
