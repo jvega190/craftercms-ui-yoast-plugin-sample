@@ -13,8 +13,6 @@ import ListItemButton from "@mui/material/ListItemButton";
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import Button from '@mui/material/Button';
 import DialogHeader from "./DialogHeader";
 
 function getStyles () {
@@ -69,19 +67,24 @@ export default function GooglePreview(props: GooglePreviewProps) {
       >
         <DialogHeader onClose={handleClose}>Google Preview</DialogHeader>
         <DialogContent>
-          <FormControl>
-            <FormLabel>Preview as:</FormLabel>
-            <RadioGroup
-              row
-              value={previewMode}
-              onChange={togglePreviewMode}
-            >
-              <FormControlLabel value="desktop" control={<Radio />} label="Desktop" />
-              <FormControlLabel value="mobile" control={<Radio />} label="Mobile" />
-            </RadioGroup>
-          </FormControl>
-          <Divider light sx={{ mt: 1, mb: 2 }} />
-          <SnippetPreview { ...props } mode={previewMode} />
+          {
+            props.title &&
+            <>
+              <FormControl>
+                <FormLabel>Preview as:</FormLabel>
+                <RadioGroup
+                  row
+                  value={previewMode}
+                  onChange={togglePreviewMode}
+                >
+                  <FormControlLabel value="desktop" control={<Radio />} label="Desktop" />
+                  <FormControlLabel value="mobile" control={<Radio />} label="Mobile" />
+                </RadioGroup>
+              </FormControl>
+              <Divider light sx={{ mt: 1, mb: 2 }} />
+              <SnippetPreview { ...props } mode={previewMode} />
+            </>
+          }
         </DialogContent>
       </Dialog>
     </>

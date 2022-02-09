@@ -12,11 +12,15 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemButton from "@mui/material/ListItemButton";
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import Dialog from '@mui/material/Dialog';
-import DialogContent from '@mui/material/DialogContent';
 import DialogHeader from "./DialogHeader";
+import DialogBody from "./DialogBody";
 
 function getStyles () {
   return {
+    root: {
+      paddingBottom: '10px',
+      paddingTop: '10px'
+    },
     listItemText: {
       '& span': {
         fontWeight: 700,
@@ -36,7 +40,7 @@ export interface GooglePreviewProps {
   onMouseUp?(field: string): any;
 }
 
-export default function GooglePreview(props: GooglePreviewProps) {
+export default function GooglePreviewTool(props: GooglePreviewProps) {
   const [previewMode, setPreviewMode] = useState(MODE_DESKTOP);
   const [openDialog, setOpenDialog] = useState(false);
   const sx = getStyles();
@@ -53,7 +57,7 @@ export default function GooglePreview(props: GooglePreviewProps) {
 
   return (
     <>
-      <ListItemButton onClick={handleClickOpen}>
+      <ListItemButton onClick={handleClickOpen} divider sx={sx.root}>
         <ListItemText primary="Google Preview" sx={sx.listItemText}/>
         <ListItemIcon>
           <OpenInNewIcon sx={sx.listItemIcon} />
@@ -66,7 +70,7 @@ export default function GooglePreview(props: GooglePreviewProps) {
         onClose={handleClose}
       >
         <DialogHeader onClose={handleClose}>Google Preview</DialogHeader>
-        <DialogContent>
+        <DialogBody>
           <FormControl>
             <FormLabel>Preview as:</FormLabel>
             <RadioGroup
@@ -80,7 +84,7 @@ export default function GooglePreview(props: GooglePreviewProps) {
           </FormControl>
           <Divider light sx={{ mt: 1, mb: 2 }} />
           <SnippetPreview { ...props } mode={previewMode} />
-        </DialogContent>
+        </DialogBody>
       </Dialog>
     </>
   );

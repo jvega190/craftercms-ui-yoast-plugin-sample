@@ -3,6 +3,16 @@ import DialogTitle from '@mui/material/DialogTitle';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 
+function getStyles() {
+  return {
+    root: {
+      m: 0,
+      p: 2,
+      borderBottom: '1px solid rgba(0, 0, 0, 0.12)'
+    }
+  }
+}
+
 export interface DialogHeaderProps {
   id?: string;
   children?: React.ReactNode;
@@ -11,9 +21,10 @@ export interface DialogHeaderProps {
 
 export default function DialogHeader (props: DialogHeaderProps) {
   const { children, onClose, ...other } = props;
+  const sx = getStyles();
 
   return (
-    <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
+    <DialogTitle sx={sx.root} {...other}>
       {children}
       {onClose ? (
         <IconButton

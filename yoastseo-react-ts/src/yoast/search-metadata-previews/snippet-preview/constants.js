@@ -5,9 +5,11 @@ export const MODES = [ MODE_DESKTOP, MODE_MOBILE ];
 
 export const DEFAULT_MODE = MODE_MOBILE;
 
-export default {
-	MODE_MOBILE,
-	MODE_DESKTOP,
-	MODES,
-	DEFAULT_MODE,
-};
+const constants = {
+  MODE_MOBILE,
+  MODE_DESKTOP,
+  MODES,
+  DEFAULT_MODE,
+}
+
+export default constants;

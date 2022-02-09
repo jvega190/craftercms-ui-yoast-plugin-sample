@@ -19,8 +19,9 @@ import TextField from '@mui/material/TextField';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Box from '@mui/material/Box';
-import GooglePreview from "./GooglePreview";
+import GooglePreviewTool from "./GooglePreviewTool";
 import List from '@mui/material/List';
+import FacebookPreviewTool from "./FacebookPreviewTool";
 
 const i18n = () => {
   return new Jed({
@@ -155,7 +156,13 @@ export default function Analyser () {
               assessor={seoAssessor}
             />
           }
-          <GooglePreview { ...defaultArgs } />
+          <GooglePreviewTool { ...defaultArgs } />
+          <FacebookPreviewTool
+            siteUrl="yoast.com"
+            title="YoastCon Workshops"
+            description="Description to go along with a landscape image."
+            imageUrl="https://yoast.com/app/uploads/2015/06/How_to_choose_keywords_FI.png"
+          />
         </List>
       </Grid>
     </Grid>
