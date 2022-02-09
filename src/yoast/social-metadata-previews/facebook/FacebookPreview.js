@@ -56,6 +56,7 @@ const FacebookTextWrapper = styled.div`
 	justify-content: ${ props => props.mode === "landscape" ? "flex-start" : "center" };
 	font-size: 12px;
 	overflow: hidden;
+	font-family: Lato, sans-serif;
 `;
 
 /**
