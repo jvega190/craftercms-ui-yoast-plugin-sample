@@ -13,7 +13,8 @@ document.addEventListener("DOMContentLoaded", function() {
       title: document.querySelector('title')?.innerText,
       description: document.querySelector('meta[name="description"]')?.content,
       keyword: document.querySelector('meta[name="keyword"]')?.content,
-      contents: document.querySelector('body').innerHTML
+      contents: document.querySelector('body').innerHTML,
+      url: window.location.href
     }
   };
 

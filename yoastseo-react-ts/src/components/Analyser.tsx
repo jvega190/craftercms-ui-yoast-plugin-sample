@@ -19,11 +19,8 @@ import TextField from '@mui/material/TextField';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Box from '@mui/material/Box';
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import Typography from '@mui/material/Typography';
+import GooglePreview from "./GooglePreview";
+import List from '@mui/material/List';
 
 const i18n = () => {
   return new Jed({
@@ -41,37 +38,17 @@ const i18n = () => {
 
 const contentAssessor = new ContentAssessor(i18n());
 const seoAssessor = new SeoAssessor(i18n());
-const MODE_MOBILE = "mobile";
-const MODE_DESKTOP = "desktop";
-
-const defaultValue = {
-  title: 'Title',
-  metaDesc: 'Description'
-}
-const placeholder = {
-  title: 'Title',
-  metaDesc: 'Description',
-  urlPath: 'https://example.org'
-}
-// const test = SnippetPreview({
-//   data: {},
-//   analyzerApp: contentAssessor,
-//   placeholder,
-//   i18n: i18n(),
-//   defaultValue,
-//   baseUrl: 'https://example.org'
-// })
 
 const defaultArgs = {
-  description: "Description",
-  title: "Title",
-  url: "https://example.org",
-  mode: 'desktop',
-  // onMouseUp: jest.fn(),
+  description: "Wikipedia is a free online encyclopedia, created and edited by volunteers around the world and hosted by the Wikimedia Foundation",
+  title: "Hello word! | Test",
+  url: "http://localhost:8080",
+  onMouseUp: (e: any) => {
+    console.log('mouseUp', e);
+  },
 };
 
 export default function Analyser () {
-  // const [paper, setPaper] = useState<PaperType>();
   const [paper, setPaper] = useState<PaperType>(new Paper(contents, {
     title,
     titleWidth: helpers.measureTextWidth(title),
@@ -92,20 +69,7 @@ export default function Analyser () {
 
     setSeoAssessorResults(seoAssessor.results);
     setContentAssessorResults(contentAssessor.results);
-
-    // console.log('paper', paper);
   }, [paper]);
-
-  // console.log('snippetPreview', MODE_DESKTOP);
-
-  // const defaultArgs = {
-  //   description: "Description",
-  //   title: "Title",
-  //   url: "https://example.org",
-  //   mode: MODE_DESKTOP,
-  //   onMouseUp: () => {}
-  //   // onMouseUp: jest.fn(),
-  // };
 
   return (
     <Grid container spacing={4} alignItems="stretch">
@@ -170,47 +134,29 @@ export default function Analyser () {
         </Card>
       </Grid>
       <Grid item xs={12} md={4}>
-        {
-          contentAssessor &&
-          <AnalysisResults
-            heading={"Content Analysis"}
-            results={contentAssessorResults}
-            assessor={contentAssessor}
-          />
-        }
-        {
-          seoAssessor &&
-          <AnalysisResults
-            heading={"SEO Analysis"}
-            results={seoAssessorResults}
-            assessor={seoAssessor}
-          />
-        }
-        <Accordion>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel3a-content"
-            id="panel3a-header"
-          >
-            <Typography fontWeight="bold">Google Preview</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            {/*{*/}
-            {/*  contentAssessor && contentAssessorResults &&*/}
-            {/*  <SnippetPreview*/}
-            {/*    data={{}}*/}
-            {/*    analyzerApp={contentAssessor}*/}
-            {/*    placeholder={placeholder}*/}
-            {/*    i18n={i18n()}*/}
-            {/*    defaultValue={defaultValue}*/}
-            {/*    baseUrl='https://example.org'*/}
-            {/*  />*/}
-            {/*}*/}
-
-            {/*<SnippetPreview { ...defaultArgs } />*/}
-          </AccordionDetails>
-        </Accordion>
-
+        <List
+          sx={{ width: '100%', bgcolor: 'background.paper' }}
+          component="nav"
+          aria-labelledby="nested-list-subheader"
+        >
+          {
+            contentAssessor &&
+            <AnalysisResults
+              heading={"Content Analysis"}
+              results={contentAssessorResults}
+              assessor={contentAssessor}
+            />
+          }
+          {
+            seoAssessor &&
+            <AnalysisResults
+              heading={"SEO Analysis"}
+              results={seoAssessorResults}
+              assessor={seoAssessor}
+            />
+          }
+          <GooglePreview { ...defaultArgs } />
+        </List>
       </Grid>
     </Grid>
   )

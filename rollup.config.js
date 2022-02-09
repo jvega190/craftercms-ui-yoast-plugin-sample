@@ -7,6 +7,7 @@ import pkg from './package.json';
 import copy from 'rollup-plugin-copy';
 import treeshaking from 'rollup-plugin-ts-treeshaking';
 import replace from '@rollup/plugin-replace';
+import babel from 'rollup-plugin-babel';
 
 const extensions = ['.js', '.jsx', '.ts', '.tsx'];
 
@@ -44,6 +45,10 @@ export default {
     treeshaking(),
     replaceImportsWithVars({ varType: 'var', replacementLookup: globals }),
     resolve({ extensions, preferBuiltins: false }),
+    babel({
+      exclude: 'node_modules/**',
+      presets: ['@babel/env', '@babel/preset-react']
+    }),
     commonjs({
       exclude: 'src/**',
     }),

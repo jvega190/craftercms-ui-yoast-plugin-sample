@@ -4,6 +4,13 @@ import { Paper, SeoAssessor, ContentAssessor, helpers } from "yoastseo";
 import {Paper as PaperType} from "./models/Analysis";
 import Jed from "jed";
 import AnalysisResults from "./components/AnalysisResults";
+import GooglePreview, {GooglePreviewProps} from "./components/GooglePreview";
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Typography from '@mui/material/Typography';
+import List from '@mui/material/List';
 
 const i18n = () => {
   return new Jed({
@@ -24,6 +31,7 @@ const seoAssessor = new SeoAssessor(i18n());
 
 const ReactComponent = () => {
   const [paper, setPaper] = useState<PaperType>();
+  const [googlePreviewData, setGooglePreviewData] = useState<GooglePreviewProps>();
   const [contentAssessorResults, setContentAssessorResults] = useState();
   const [seoAssessorResults, setSeoAssessorResults] = useState();
   const [requestedSEOData, setRequestedSEOData] = useState(false);
@@ -39,7 +47,7 @@ const ReactComponent = () => {
       .subscribe((action) => {
         switch (action.type) {
           case 'RESPONSE_SEO_DATA':
-            const { contents, description, keyword, title } = action.payload;
+            const { contents, description, keyword, title, url } = action.payload;
 
             // title?: string – The SEO title.
             // titleWidth?: number – The width of the title in pixels.
@@ -53,8 +61,15 @@ const ReactComponent = () => {
               title,
               titleWidth: helpers.measureTextWidth(title),
               description,
-              keyword
+              keyword,
+              url
             }));
+            setGooglePreviewData({
+              description,
+              title,
+              url,
+              onMouseUp: () => {}
+            });
             setRequestedSEOData(false);
             break;
           case 'GUEST_CHECK_IN':
@@ -95,22 +110,33 @@ const ReactComponent = () => {
       >
         Update SEO Data
       </Button>
-      {
-        contentAssessor &&
-        <AnalysisResults
-          heading={"Content Analysis"}
-          results={contentAssessorResults}
-          assessor={contentAssessor}
-        />
-      }
-      {
-        seoAssessor &&
-        <AnalysisResults
-          heading={"SEO Analysis"}
-          results={seoAssessorResults}
-          assessor={seoAssessor}
-        />
-      }
+
+      <List
+        sx={{ width: '100%', bgcolor: 'background.paper' }}
+        component="nav"
+        aria-labelledby="nested-list-subheader"
+      >
+        {
+          contentAssessor &&
+          <AnalysisResults
+            heading={"Content Analysis"}
+            results={contentAssessorResults}
+            assessor={contentAssessor}
+          />
+        }
+        {
+          seoAssessor &&
+          <AnalysisResults
+            heading={"SEO Analysis"}
+            results={seoAssessorResults}
+            assessor={seoAssessor}
+          />
+        }
+        {
+          googlePreviewData &&
+          <GooglePreview { ...googlePreviewData } />
+        }
+      </List>
     </>
   )
 }
