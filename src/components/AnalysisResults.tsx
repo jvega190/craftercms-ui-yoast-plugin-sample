@@ -18,6 +18,10 @@ interface AnalysisResultsProps {
 
 function getStyles() {
   return {
+    root: {
+      boxShadow: 'none',
+      borderBottom: '1px solid rgba(0, 0, 0, 0.12)'
+    },
     ratingIndicator: {
       marginRight: '12px'
     },
@@ -38,7 +42,7 @@ export default function AnalysisResults(props: AnalysisResultsProps) {
   const sx = getStyles();
 
   return (
-    <Accordion>
+    <Accordion disableGutters sx={sx.root}>
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
       >

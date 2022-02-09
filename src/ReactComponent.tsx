@@ -4,13 +4,14 @@ import { Paper, SeoAssessor, ContentAssessor, helpers } from "yoastseo";
 import {Paper as PaperType} from "./models/Analysis";
 import Jed from "jed";
 import AnalysisResults from "./components/AnalysisResults";
-import GooglePreview, {GooglePreviewProps} from "./components/GooglePreview";
+import GooglePreviewTool, {GooglePreviewProps} from "./components/GooglePreviewTool";
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Typography from '@mui/material/Typography';
 import List from '@mui/material/List';
+import FacebookPreviewTool, {FacebookPreviewProps} from "./components/FacebookPreviewTool";
 
 const i18n = () => {
   return new Jed({
@@ -32,6 +33,7 @@ const seoAssessor = new SeoAssessor(i18n());
 const ReactComponent = () => {
   const [paper, setPaper] = useState<PaperType>();
   const [googlePreviewData, setGooglePreviewData] = useState<GooglePreviewProps>();
+  const [facebookPreviewData, setFacebookPreviewData] = useState<FacebookPreviewProps>();
   const [contentAssessorResults, setContentAssessorResults] = useState();
   const [seoAssessorResults, setSeoAssessorResults] = useState();
   const [requestedSEOData, setRequestedSEOData] = useState(false);
@@ -47,7 +49,17 @@ const ReactComponent = () => {
       .subscribe((action) => {
         switch (action.type) {
           case 'RESPONSE_SEO_DATA':
-            const { contents, description, keyword, title, url } = action.payload;
+            const {
+              contents,
+              description,
+              keyword,
+              title,
+              url,
+              facebookTitle,
+              facebookDescription,
+              facebookUrl,
+              facebookImageUrl
+            } = action.payload;
 
             // title?: string – The SEO title.
             // titleWidth?: number – The width of the title in pixels.
@@ -69,6 +81,12 @@ const ReactComponent = () => {
               title,
               url,
               onMouseUp: () => {}
+            });
+            setFacebookPreviewData({
+              title,
+              description: facebookDescription,
+              siteUrl: facebookUrl,
+              imageUrl: facebookImageUrl
             });
             setRequestedSEOData(false);
             break;
@@ -132,10 +150,8 @@ const ReactComponent = () => {
             assessor={seoAssessor}
           />
         }
-        {
-          googlePreviewData &&
-          <GooglePreview { ...googlePreviewData } />
-        }
+        <GooglePreviewTool data={googlePreviewData} />
+        <FacebookPreviewTool data={facebookPreviewData}/>
       </List>
     </>
   )
